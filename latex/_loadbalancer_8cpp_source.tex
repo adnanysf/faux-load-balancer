@@ -1,0 +1,135 @@
+\doxysection{Loadbalancer.\+cpp}
+\hypertarget{_loadbalancer_8cpp_source}{}\label{_loadbalancer_8cpp_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <string>}\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <arpa/inet.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}Requests.cpp"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}WebServer.cpp"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_load_balancer_a6114560fd6fd431c75adeab2f0b230a9}{LoadBalancer}}\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00015\ \ \ \ \ std::vector<WebServer>\ servers;\ }
+\DoxyCodeLine{00016\ \ \ \ \ std::queue<Request>\ streamingQueue;\ }
+\DoxyCodeLine{00017\ \ \ \ \ std::queue<Request>\ processingQueue;\ }
+\DoxyCodeLine{00018\ \ \ \ \ std::pair<uint32\_t,\ uint32\_t>\ blockedRange;\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{int}\ numberOfRequests\ =\ 0;\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{int}\ numberOfServersAdded\ =\ 0;\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ numberOfServersRemoved\ =\ 0;\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ numberOfBlockedRequests\ =\ 0;\ }
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ currentTime;\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_load_balancer_a6114560fd6fd431c75adeab2f0b230a9}{LoadBalancer}}(\textcolor{keywordtype}{int}\ numServers)\{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numServers;\ ++i)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ servers.push\_back(\mbox{\hyperlink{class_web_server}{WebServer}}(\textcolor{stringliteral}{"{}0"{}},0));}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ currentTime\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00043\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}{ipToInteger}}(\textcolor{keyword}{const}\ std::string\&\ ip)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }sockaddr\_in\ sa;}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ inet\_pton(AF\_INET,\ ip.c\_str(),\ \&(sa.sin\_addr));}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ntohl(sa.sin\_addr.s\_addr);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_load_balancer_a4f2d87067abfe2a1cfb424716a937947}{isBlocked}}(uint32\_t\ ip)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ip\ >=\ blockedRange.first\ \&\&\ ip\ <=\ blockedRange.second)\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00059\ \ \ \ \ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_a4d05c432c11d8fc27292757f37c5a7dd}{addBlockedIPRange}}(std::string\ start,\ std::string\ end)\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ blockedRange.first\ =\ \mbox{\hyperlink{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}{ipToInteger}}(start);}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ blockedRange.second\ =\ \mbox{\hyperlink{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}{ipToInteger}}(end);}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_ac62573fec3b6707764adf6005ea057d6}{queueRequest}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_request}{Request}}\&\ request)\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ numberOfRequests++;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{class_load_balancer_a4f2d87067abfe2a1cfb424716a937947}{isBlocked}}(\mbox{\hyperlink{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}{ipToInteger}}(request.\mbox{\hyperlink{struct_request_aa83b5e8331e7f13fb5742984f955d0c1}{ipIn}})))\{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ numberOfBlockedRequests++;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Blocked\ request\ from\ "{}}\ <<\ request.\mbox{\hyperlink{struct_request_aa83b5e8331e7f13fb5742984f955d0c1}{ipIn}}\ <<\ std::endl;}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (request.\mbox{\hyperlink{struct_request_ad49a0f18615ea50f9a11cd2494c93044}{jobType}}\ ==\ \textcolor{charliteral}{'S'})\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ streamingQueue.push(request);}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ processingQueue.push(request);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_a11084cbdda9101abfc893a71f046045b}{processRequests}}()\{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ servers.size();\ ++i)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!servers[i].isAvailable())\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ servers[i].processRequest();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!streamingQueue.empty())\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_request}{Request}}\ request\ =\ streamingQueue.front();}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ streamingQueue.pop();}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ servers[i].addRequest(\&request);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!processingQueue.empty())\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_request}{Request}}\ request\ =\ processingQueue.front();}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ processingQueue.pop();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ servers[i].addRequest(\&request);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_load_balancer_a9a4b8c8963e045a5e8a433f78a96715f}{isFull}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ streamingQueue.size()\ +\ processingQueue.size()\ >\ servers.size()\ *\ 30;}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_a2ae6583049a73a7106425f59076c3ecc}{increaseServers}}(\textcolor{keywordtype}{int}\ numAdded,\ \textcolor{keywordtype}{int}\ clockCycle)\{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ numAdded;\ i++)\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ servers.push\_back(\mbox{\hyperlink{class_web_server}{WebServer}}(\textcolor{stringliteral}{"{}0"{}},0));}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ numberOfServersAdded\ +=\ numAdded;}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ std::cout\ <<\ clockCycle\ <<\ \textcolor{stringliteral}{"{}:\ Added\ "{}}\ <<\ numAdded\ <<\ \textcolor{stringliteral}{"{}\ servers."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_ac561385a542864add6d32f5bc1d3485f}{decreaseServers}}(\textcolor{keywordtype}{int}\ clockCycle)\{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numRemoved\ =\ 0;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ servers.size();\ ++i)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(servers[i].getId()\ ==\ \textcolor{stringliteral}{"{}0"{}})\{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ servers.erase(servers.begin()\ +\ i);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ numRemoved++;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (numRemoved\ >\ 0)\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ numberOfServersRemoved\ +=\ numRemoved;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ clockCycle\ <<\ \textcolor{stringliteral}{"{}:\ Removed\ "{}}\ <<\ numRemoved\ <<\ \textcolor{stringliteral}{"{}\ servers."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_afcabd550181ecddde861392a21754ad1}{updateServers}}(\textcolor{keywordtype}{int}\ clockCycle)\{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numServersNeeded\ =\ (streamingQueue.size()\ +\ processingQueue.size())/30;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numServers\ =\ numServersNeeded\ -\/\ servers.size();}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (numServers\ >\ 0)\ \{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_load_balancer_a2ae6583049a73a7106425f59076c3ecc}{increaseServers}}(numServers,\ clockCycle);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (numServers\ <\ 0)\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_load_balancer_ac561385a542864add6d32f5bc1d3485f}{decreaseServers}}(clockCycle);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \ \ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_load_balancer_a2639592a750e60f8b29998e4f474642e}{printStats}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Number\ of\ requests:\ "{}}\ <<\ numberOfRequests\ <<\ std::endl;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Number\ of\ blocked\ requests:\ "{}}\ <<\ numberOfBlockedRequests\ <<\ std::endl;}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Number\ of\ servers\ added:\ "{}}\ <<\ numberOfServersAdded\ <<\ std::endl;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Number\ of\ servers\ removed:\ "{}}\ <<\ numberOfServersRemoved\ <<\ std::endl;}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_load_balancer_a8c30ab1631b5d0f9b21228d78b2f340e}{areQueuesEmpty}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ streamingQueue.empty()\ \&\&\ processingQueue.empty();}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ \};}
+
+\end{DoxyCode}

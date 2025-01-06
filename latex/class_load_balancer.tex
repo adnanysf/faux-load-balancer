@@ -1,0 +1,206 @@
+\doxysection{Load\+Balancer Class Reference}
+\hypertarget{class_load_balancer}{}\label{class_load_balancer}\index{LoadBalancer@{LoadBalancer}}
+
+
+Manages load balancing between servers, processes requests, and handles blocked IPs.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_load_balancer_a6114560fd6fd431c75adeab2f0b230a9}{Load\+Balancer}} (int num\+Servers)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_load_balancer}{Load\+Balancer} with a specified number of servers. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}{ip\+To\+Integer}} (const std\+::string \&ip)
+\begin{DoxyCompactList}\small\item\em Converts an IPv4 address from string format to a 32-\/bit integer. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_load_balancer_a4f2d87067abfe2a1cfb424716a937947}{is\+Blocked}} (uint32\+\_\+t ip)
+\begin{DoxyCompactList}\small\item\em Checks if an IP address is within the blocked range. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_load_balancer_a4d05c432c11d8fc27292757f37c5a7dd}{add\+Blocked\+IPRange}} (std\+::string start, std\+::string end)
+\begin{DoxyCompactList}\small\item\em Adds a range of IPs to the blocked list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_load_balancer_ac62573fec3b6707764adf6005ea057d6}{queue\+Request}} (const \mbox{\hyperlink{struct_request}{Request}} \&request)
+\begin{DoxyCompactList}\small\item\em Adds a request to the appropriate queue. \end{DoxyCompactList}\item 
+\Hypertarget{class_load_balancer_a11084cbdda9101abfc893a71f046045b}\label{class_load_balancer_a11084cbdda9101abfc893a71f046045b} 
+void {\bfseries process\+Requests} ()
+\begin{DoxyCompactList}\small\item\em Processes requests by assigning them to available servers. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_load_balancer_a9a4b8c8963e045a5e8a433f78a96715f}{is\+Full}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the load balancer is overloaded. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_load_balancer_a2ae6583049a73a7106425f59076c3ecc}{increase\+Servers}} (int num\+Added, int clock\+Cycle)
+\begin{DoxyCompactList}\small\item\em Increases the number of servers by a specified amount. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_load_balancer_ac561385a542864add6d32f5bc1d3485f}{decrease\+Servers}} (int clock\+Cycle)
+\begin{DoxyCompactList}\small\item\em Decreases the number of idle servers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_load_balancer_afcabd550181ecddde861392a21754ad1}{update\+Servers}} (int clock\+Cycle)
+\begin{DoxyCompactList}\small\item\em Updates the number of servers based on current load. \end{DoxyCompactList}\item 
+\Hypertarget{class_load_balancer_a2639592a750e60f8b29998e4f474642e}\label{class_load_balancer_a2639592a750e60f8b29998e4f474642e} 
+void {\bfseries print\+Stats} () const
+\begin{DoxyCompactList}\small\item\em Prints statistics about the load balancer\textquotesingle{}s performance. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_load_balancer_a8c30ab1631b5d0f9b21228d78b2f340e}{are\+Queues\+Empty}} () const
+\begin{DoxyCompactList}\small\item\em Checks if both the streaming and processing queues are empty. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages load balancing between servers, processes requests, and handles blocked IPs. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_load_balancer_a6114560fd6fd431c75adeab2f0b230a9}\index{LoadBalancer@{LoadBalancer}!LoadBalancer@{LoadBalancer}}
+\index{LoadBalancer@{LoadBalancer}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{LoadBalancer()}{LoadBalancer()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a6114560fd6fd431c75adeab2f0b230a9} 
+Load\+Balancer\+::\+Load\+Balancer (\begin{DoxyParamCaption}\item[{int}]{num\+Servers}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructs a \doxylink{class_load_balancer}{Load\+Balancer} with a specified number of servers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Servers} & The initial number of servers. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_load_balancer_a4d05c432c11d8fc27292757f37c5a7dd}\index{LoadBalancer@{LoadBalancer}!addBlockedIPRange@{addBlockedIPRange}}
+\index{addBlockedIPRange@{addBlockedIPRange}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{addBlockedIPRange()}{addBlockedIPRange()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a4d05c432c11d8fc27292757f37c5a7dd} 
+void Load\+Balancer\+::add\+Blocked\+IPRange (\begin{DoxyParamCaption}\item[{std\+::string}]{start}{, }\item[{std\+::string}]{end}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a range of IPs to the blocked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & The start of the blocked IP range in string format. \\
+\hline
+{\em end} & The end of the blocked IP range in string format. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_load_balancer_a8c30ab1631b5d0f9b21228d78b2f340e}\index{LoadBalancer@{LoadBalancer}!areQueuesEmpty@{areQueuesEmpty}}
+\index{areQueuesEmpty@{areQueuesEmpty}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{areQueuesEmpty()}{areQueuesEmpty()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a8c30ab1631b5d0f9b21228d78b2f340e} 
+bool Load\+Balancer\+::are\+Queues\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if both the streaming and processing queues are empty. 
+
+\begin{DoxyReturn}{Returns}
+True if both queues are empty, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_load_balancer_ac561385a542864add6d32f5bc1d3485f}\index{LoadBalancer@{LoadBalancer}!decreaseServers@{decreaseServers}}
+\index{decreaseServers@{decreaseServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{decreaseServers()}{decreaseServers()}}
+{\footnotesize\ttfamily \label{class_load_balancer_ac561385a542864add6d32f5bc1d3485f} 
+void Load\+Balancer\+::decrease\+Servers (\begin{DoxyParamCaption}\item[{int}]{clock\+Cycle}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Decreases the number of idle servers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clock\+Cycle} & The current clock cycle when the servers are removed. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_load_balancer_a2ae6583049a73a7106425f59076c3ecc}\index{LoadBalancer@{LoadBalancer}!increaseServers@{increaseServers}}
+\index{increaseServers@{increaseServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{increaseServers()}{increaseServers()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a2ae6583049a73a7106425f59076c3ecc} 
+void Load\+Balancer\+::increase\+Servers (\begin{DoxyParamCaption}\item[{int}]{num\+Added}{, }\item[{int}]{clock\+Cycle}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Increases the number of servers by a specified amount. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Added} & The number of servers to add. \\
+\hline
+{\em clock\+Cycle} & The current clock cycle when the servers are added. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973}\index{LoadBalancer@{LoadBalancer}!ipToInteger@{ipToInteger}}
+\index{ipToInteger@{ipToInteger}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{ipToInteger()}{ipToInteger()}}
+{\footnotesize\ttfamily \label{class_load_balancer_ab208ba3b702598d5f02ca16e571b1973} 
+uint32\+\_\+t Load\+Balancer\+::ip\+To\+Integer (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{ip}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts an IPv4 address from string format to a 32-\/bit integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & The IPv4 address in string format (e.\+g., "{}192.\+168.\+1.\+1"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The IPv4 address as a 32-\/bit integer in host byte order. 
+\end{DoxyReturn}
+\Hypertarget{class_load_balancer_a4f2d87067abfe2a1cfb424716a937947}\index{LoadBalancer@{LoadBalancer}!isBlocked@{isBlocked}}
+\index{isBlocked@{isBlocked}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{isBlocked()}{isBlocked()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a4f2d87067abfe2a1cfb424716a937947} 
+bool Load\+Balancer\+::is\+Blocked (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{ip}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if an IP address is within the blocked range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ip} & The IPv4 address as a 32-\/bit integer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the IP is blocked, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_load_balancer_a9a4b8c8963e045a5e8a433f78a96715f}\index{LoadBalancer@{LoadBalancer}!isFull@{isFull}}
+\index{isFull@{isFull}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{isFull()}{isFull()}}
+{\footnotesize\ttfamily \label{class_load_balancer_a9a4b8c8963e045a5e8a433f78a96715f} 
+bool Load\+Balancer\+::is\+Full (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the load balancer is overloaded. 
+
+\begin{DoxyReturn}{Returns}
+True if the combined queue size exceeds the servers\textquotesingle{} capacity, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{class_load_balancer_ac62573fec3b6707764adf6005ea057d6}\index{LoadBalancer@{LoadBalancer}!queueRequest@{queueRequest}}
+\index{queueRequest@{queueRequest}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{queueRequest()}{queueRequest()}}
+{\footnotesize\ttfamily \label{class_load_balancer_ac62573fec3b6707764adf6005ea057d6} 
+void Load\+Balancer\+::queue\+Request (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_request}{Request}} \&}]{request}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a request to the appropriate queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The request to be queued. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_load_balancer_afcabd550181ecddde861392a21754ad1}\index{LoadBalancer@{LoadBalancer}!updateServers@{updateServers}}
+\index{updateServers@{updateServers}!LoadBalancer@{LoadBalancer}}
+\doxysubsubsection{\texorpdfstring{updateServers()}{updateServers()}}
+{\footnotesize\ttfamily \label{class_load_balancer_afcabd550181ecddde861392a21754ad1} 
+void Load\+Balancer\+::update\+Servers (\begin{DoxyParamCaption}\item[{int}]{clock\+Cycle}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Updates the number of servers based on current load. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clock\+Cycle} & The current clock cycle during the update. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Loadbalancer.\+cpp\end{DoxyCompactItemize}

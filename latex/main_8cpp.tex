@@ -1,0 +1,68 @@
+\doxysection{main.\+cpp File Reference}
+\hypertarget{main_8cpp}{}\label{main_8cpp}\index{main.cpp@{main.cpp}}
+
+
+Main program for load balancer simulation.  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include "{}Loadbalancer.\+cpp"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{main_8cpp_a0262883cd1482b5e76591b8333bd481d}{generate\+Random\+IP}} ()
+\begin{DoxyCompactList}\small\item\em Generates a random IP address. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_request}{Request}} \mbox{\hyperlink{main_8cpp_a60e973013d16b72b311665dbb9419fe1}{generate\+Random\+Request}} ()
+\begin{DoxyCompactList}\small\item\em Generates a random \doxylink{struct_request}{Request} object. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Main function to run the load balancer simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main program for load balancer simulation. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8cpp_a0262883cd1482b5e76591b8333bd481d}\index{main.cpp@{main.cpp}!generateRandomIP@{generateRandomIP}}
+\index{generateRandomIP@{generateRandomIP}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{generateRandomIP()}{generateRandomIP()}}
+{\footnotesize\ttfamily \label{main_8cpp_a0262883cd1482b5e76591b8333bd481d} 
+std\+::string generate\+Random\+IP (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Generates a random IP address. 
+
+\begin{DoxyReturn}{Returns}
+A string representing a random IP address. 
+\end{DoxyReturn}
+\Hypertarget{main_8cpp_a60e973013d16b72b311665dbb9419fe1}\index{main.cpp@{main.cpp}!generateRandomRequest@{generateRandomRequest}}
+\index{generateRandomRequest@{generateRandomRequest}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{generateRandomRequest()}{generateRandomRequest()}}
+{\footnotesize\ttfamily \label{main_8cpp_a60e973013d16b72b311665dbb9419fe1} 
+\mbox{\hyperlink{struct_request}{Request}} generate\+Random\+Request (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Generates a random \doxylink{struct_request}{Request} object. 
+
+\begin{DoxyReturn}{Returns}
+A \doxylink{struct_request}{Request} object with random IP addresses, processing time, and job type. 
+\end{DoxyReturn}
+\Hypertarget{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+int main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Main function to run the load balancer simulation. 
+
+\begin{DoxyReturn}{Returns}
+0 on successful execution. 
+\end{DoxyReturn}

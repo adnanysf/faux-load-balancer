@@ -1,0 +1,108 @@
+\doxysection{Web\+Server Class Reference}
+\hypertarget{class_web_server}{}\label{class_web_server}\index{WebServer@{WebServer}}
+
+
+Represents a single web server that processes requests.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_web_server_ad1923fe9f56dc624c0193b3b58956d0d}{Web\+Server}} (std\+::string server\+Id, int time\+Left)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_web_server}{Web\+Server} with a specific ID and initial time left. \end{DoxyCompactList}\item 
+\Hypertarget{class_web_server_af4dad1ab06d4eb72773ba9f3e5482251}\label{class_web_server_af4dad1ab06d4eb72773ba9f3e5482251} 
+void {\bfseries process\+Request} ()
+\begin{DoxyCompactList}\small\item\em Processes the current request, reducing its remaining time. If the request is complete, the server becomes available. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_web_server_a2739c1973665a9fd920dce691a12b9e5}{is\+Available}} () const
+\begin{DoxyCompactList}\small\item\em Checks if the server is available for a new request. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_web_server_a7c97c699a5ed9772708ff3f81af20977}{add\+Request}} (\mbox{\hyperlink{struct_request}{Request}} \texorpdfstring{$\ast$}{*}request)
+\begin{DoxyCompactList}\small\item\em Assigns a new request to the server. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_web_server_a64e98f893661af426b6efffcfd4efc4d}{get\+Time\+Left}} ()
+\begin{DoxyCompactList}\small\item\em Gets the time left for the current request to complete. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_web_server_a6aee6f00cd7073a0ebdea5c29d14e678}{get\+Id}} ()
+\begin{DoxyCompactList}\small\item\em Gets the ID of the server or the current request. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a single web server that processes requests. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_web_server_ad1923fe9f56dc624c0193b3b58956d0d}\index{WebServer@{WebServer}!WebServer@{WebServer}}
+\index{WebServer@{WebServer}!WebServer@{WebServer}}
+\doxysubsubsection{\texorpdfstring{WebServer()}{WebServer()}}
+{\footnotesize\ttfamily \label{class_web_server_ad1923fe9f56dc624c0193b3b58956d0d} 
+Web\+Server\+::\+Web\+Server (\begin{DoxyParamCaption}\item[{std\+::string}]{server\+Id}{, }\item[{int}]{time\+Left}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructs a \doxylink{class_web_server}{Web\+Server} with a specific ID and initial time left. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em server\+Id} & The ID of the server. \\
+\hline
+{\em time\+Left} & The initial time left to process a request. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_web_server_a7c97c699a5ed9772708ff3f81af20977}\index{WebServer@{WebServer}!addRequest@{addRequest}}
+\index{addRequest@{addRequest}!WebServer@{WebServer}}
+\doxysubsubsection{\texorpdfstring{addRequest()}{addRequest()}}
+{\footnotesize\ttfamily \label{class_web_server_a7c97c699a5ed9772708ff3f81af20977} 
+void Web\+Server\+::add\+Request (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_request}{Request}} \texorpdfstring{$\ast$}{*}}]{request}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assigns a new request to the server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & Pointer to the request to be processed. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_web_server_a6aee6f00cd7073a0ebdea5c29d14e678}\index{WebServer@{WebServer}!getId@{getId}}
+\index{getId@{getId}!WebServer@{WebServer}}
+\doxysubsubsection{\texorpdfstring{getId()}{getId()}}
+{\footnotesize\ttfamily \label{class_web_server_a6aee6f00cd7073a0ebdea5c29d14e678} 
+std\+::string Web\+Server\+::get\+Id (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the ID of the server or the current request. 
+
+\begin{DoxyReturn}{Returns}
+The server\textquotesingle{}s ID or the ID of the current request being processed. 
+\end{DoxyReturn}
+\Hypertarget{class_web_server_a64e98f893661af426b6efffcfd4efc4d}\index{WebServer@{WebServer}!getTimeLeft@{getTimeLeft}}
+\index{getTimeLeft@{getTimeLeft}!WebServer@{WebServer}}
+\doxysubsubsection{\texorpdfstring{getTimeLeft()}{getTimeLeft()}}
+{\footnotesize\ttfamily \label{class_web_server_a64e98f893661af426b6efffcfd4efc4d} 
+int Web\+Server\+::get\+Time\+Left (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Gets the time left for the current request to complete. 
+
+\begin{DoxyReturn}{Returns}
+The time left to complete the current request. 
+\end{DoxyReturn}
+\Hypertarget{class_web_server_a2739c1973665a9fd920dce691a12b9e5}\index{WebServer@{WebServer}!isAvailable@{isAvailable}}
+\index{isAvailable@{isAvailable}!WebServer@{WebServer}}
+\doxysubsubsection{\texorpdfstring{isAvailable()}{isAvailable()}}
+{\footnotesize\ttfamily \label{class_web_server_a2739c1973665a9fd920dce691a12b9e5} 
+bool Web\+Server\+::is\+Available (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the server is available for a new request. 
+
+\begin{DoxyReturn}{Returns}
+True if the server is available, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Webserver.\+cpp\end{DoxyCompactItemize}
