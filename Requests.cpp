@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string> 
 #include <vector>
+#pragma once
 
 struct Request {
     std::string ipIn;
