@@ -61,7 +61,7 @@ public:
             servers.push_back(WebServer("0",0));
         }
         numberOfServersAdded += numAdded;
-        std::cout << "Added " << numAdded << " servers" << std::endl;
+        std::cout << "Added " << numAdded << " servers at " << clockCycle << " Clock Cycles" << std::endl;
     }
 
     void decreaseServers(int clockCycle){
@@ -74,7 +74,7 @@ public:
         }
         if (numRemoved > 0) {
             numberOfServersRemoved += numRemoved;
-            std::cout << "Removed " << numRemoved << " servers" << std::endl;
+            std::cout << "Removed " << numRemoved << " servers at " << clockCycle << " Clock Cycles" << std::endl;
         }
     }
 
