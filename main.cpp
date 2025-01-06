@@ -20,15 +20,28 @@ Request generateRandomRequest() {
     return Request(ipIn, ipOut, processingTime, jobType);
 }
 
-
 int main(){
     int numServers, simulationTime;
+    std::string ans, blockedIPMin, blockedIPMax;
+
     std::cout << "Enter number of servers: ";
     std::cin >> numServers;
     std::cout << "Enter amount of clock cycles: ";
     std::cin >> simulationTime;
 
+    std::cout << "Do you want to block a range of IP addresses? (Y/N) ";
+    std::cin >> ans;
+
     LoadBalancer loadBalancer(numServers);
+
+    if (ans == "Y" || ans == "y"){
+        std::cout << "Enter start range of IP firewall: ";
+        std::cin >> blockedIPMin;
+        std::cout << "Enter end range of IP firewall: ";
+        std::cin >> blockedIPMax;
+        std::cout << std::endl;
+        loadBalancer.addBlockedIPRange(blockedIPMin, blockedIPMax);
+    }    
 
     for(int time = 0; time < simulationTime; ++time) {
 
@@ -47,7 +60,7 @@ int main(){
         
         loadBalancer.processRequests();
 
-        if(time % 20 == 0){
+        if(time % 20 == 0 && time != 0){
             loadBalancer.updateServers(time);
         }
 
