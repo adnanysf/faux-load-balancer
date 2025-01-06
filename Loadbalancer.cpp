@@ -11,7 +11,7 @@ private:
     std::vector<WebServer> servers;
     std::queue<Request> streamingQueue;
     std::queue<Request> processingQueue;
-    std::pair<uint32_t, uint32_t> blockedRange = {};
+    std::pair<uint32_t, uint32_t> blockedRange;
     int numberOfRequests = 0;
     int numberOfServersAdded = 0;
     int numberOfServersRemoved = 0;
@@ -41,7 +41,8 @@ public:
     }
 
     void addBlockedIPRange(std::string start, std::string end){
-        blockedRange = {ipToInteger(start), ipToInteger(end)};
+        blockedRange.first = ipToInteger(start);
+        blockedRange.second = ipToInteger(end);
     }
 
     void queueRequest(const Request& request){
