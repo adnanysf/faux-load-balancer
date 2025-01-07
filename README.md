@@ -8,23 +8,6 @@ This project implements a load balancer that manages load distribution between s
 
 ```
 html/
-    _loadbalancer_8cpp_source.html
-    _requests_8cpp_source.html
-    _webserver_8cpp_source.html
-    annotated_dup.js
-    annotated.html
-    class_load_balancer-members.html
-    class_load_balancer.html
-    class_load_balancer.js
-    class_web_server-members.html
-    class_web_server.html
-    class_web_server.js
-    classes.html
-    clipboard.js
-    cookie.js
-    doxygen_crawl.html
-    doxygen.css
-    dynsections.js
     ...
 latex/
     ...
